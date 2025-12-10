@@ -228,7 +228,7 @@ def main():
     lh_sen = 100      # 0.01 for +- 0.5m from the reference thickness 
     lp_sen = 20       # 0.01 for +- drho kg/m³ from the reference density
     
-    dig = open(output_path+'diagnosis.txt', 'w')
+    dig = open(os.path.join(output_path,'diagnosis.txt'), 'w')
     dig.write("-------------------------------------------------------------------------------------\n")
     dig.write("Interwave Analyzer diagnosis\n")
     dig.write("-------------------------------------------------------------------------------------\n\n")

@@ -11,6 +11,7 @@ V-22.03-1.00.3-00
 E-05.03-1.00.3-00
 """
 import numpy as np
+from fontTools.varLib.plot import stops
 
 
 def file_len(fname, col='off'):
@@ -108,6 +109,8 @@ def temper_read(nam,lin,qt):
             serial_t[t] = serial_number(yea[t],mon[t],day[t],hou[t],miu[t])
             
             for z in range(qt):
+                if camp[z+5] == "":
+                    stops()
                 temp[t][z] = float(camp[z+5])
     
             t=t+1

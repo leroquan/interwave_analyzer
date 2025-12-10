@@ -26,194 +26,197 @@ from tkinter import filedialog
 from tkinter import simpledialog
 from tkinter import ttk
 
-def open_button():
-    global path_open, path_temp, path_level, path_meteo, path_senso, path_fetch, folder_path
-    path_open = askopenfilename(defaultextension='.set', filetypes=[('SET files','*.set')])
-    
-    
-    if path_open:
-        with open(str(path_open),'r') as reader:
-            path_temp = reader.readline()
-            path_temp = path_temp.replace('\n','')
-            path_meteo = reader.readline()
-            path_meteo = path_meteo.replace('\n','')
-            path_senso = reader.readline()
-            path_senso = path_senso.replace('\n','')
-            height_wind.delete(0,'end')
-            height_wind.insert(END,float(reader.readline()))
-            radiation_on.set(int(reader.readline())) 
-            reference_level.delete(0,'end')
-            reference_level.insert(END,float(reader.readline()))
-            contri_wind_var.set(float(reader.readline()))
-            latitude_var.set(float(reader.readline()))
-            dpi.set(int(reader.readline()))
-            typechoose.set(int(reader.readline()))
-            if int(typechoose.get()) == 1:
-                vari_len.delete(0,'end')
-                vari_len.insert(END,float(reader.readline())) 
-            elif int(typechoose.get()) == 2:
-                path_fetch = reader.readline()
-                path_fetch = path_fetch.replace('\n','')
-            typelevel.set(int(reader.readline()))
-            if int(typelevel.get()) == 1:
-                unif_level.delete(0,'end')
-                unif_level.insert(END,float(reader.readline())) 
-            elif int(typelevel.get()) == 2:
-                path_level = reader.readline()
-                path_level = path_level.replace('\n','')
 
-            meta.delete(0,'end')
-            meta.insert(END,float(reader.readline())) 
-            
-            filterchoose.set(int(reader.readline()))
-            if int(filterchoose.get()) == 2:
-                
-                lv1.config(state='normal')
-                hv1.config(state='normal')                
-                
-                lv1.delete(0,'end')
-                hv1.delete(0,'end')
+def load_config(path_open):
+    global path_temp, path_level, path_meteo, path_senso, path_fetch, folder_path
 
-                lv1.insert(END,float(reader.readline()))
-                hv1.insert(END,float(reader.readline()))
-            else:
-                for i in range(2):
-                    nextline = next(reader)
+    with open(str(path_open), 'r') as reader:
+        path_temp = reader.readline()
+        path_temp = path_temp.replace('\n', '')
+        path_meteo = reader.readline()
+        path_meteo = path_meteo.replace('\n', '')
+        path_senso = reader.readline()
+        path_senso = path_senso.replace('\n', '')
+        height_wind.delete(0, 'end')
+        height_wind.insert(END, float(reader.readline()))
+        radiation_on.set(int(reader.readline()))
+        reference_level.delete(0, 'end')
+        reference_level.insert(END, float(reader.readline()))
+        contri_wind_var.set(float(reader.readline()))
+        latitude_var.set(float(reader.readline()))
+        dpi.set(int(reader.readline()))
+        typechoose.set(int(reader.readline()))
+        if int(typechoose.get()) == 1:
+            vari_len.delete(0, 'end')
+            vari_len.insert(END, float(reader.readline()))
+        elif int(typechoose.get()) == 2:
+            path_fetch = reader.readline()
+            path_fetch = path_fetch.replace('\n', '')
+        typelevel.set(int(reader.readline()))
+        if int(typelevel.get()) == 1:
+            unif_level.delete(0, 'end')
+            unif_level.insert(END, float(reader.readline()))
+        elif int(typelevel.get()) == 2:
+            path_level = reader.readline()
+            path_level = path_level.replace('\n', '')
 
+        meta.delete(0, 'end')
+        meta.insert(END, float(reader.readline()))
 
-            winsizechoose.set(int(reader.readline()))
-            if int(winsizechoose.get()) == 2:  
-                winsize.config(state='normal')                          
-                winsize.delete(0,'end')
-                winsize.insert(END,float(reader.readline()))
-            else:
+        filterchoose.set(int(reader.readline()))
+        if int(filterchoose.get()) == 2:
+
+            lv1.config(state='normal')
+            hv1.config(state='normal')
+
+            lv1.delete(0, 'end')
+            hv1.delete(0, 'end')
+
+            lv1.insert(END, float(reader.readline()))
+            hv1.insert(END, float(reader.readline()))
+        else:
+            for i in range(2):
                 nextline = next(reader)
 
-            num = reader.readline().strip()
-            deco_dt.delete(0,'end')
-            if num == '-999':
-                decomp.set(0)
-                deco_dt.config(state='disable')
-            else:
-                decomp.set(1)
-                deco_dt.config(state='normal')
-                deco_dt.insert(END,float(num))
-               
-            win = reader.readline()
-            for i in range(4):
-                if win.strip() == welch_windows[i]:
-                    windows_var.set(welch_windows[i])
-                
-            mon = reader.readline()
-            for i in range(3):
-                if mon.strip() == wavelet_windows[i]:
-                    mother_var.set(wavelet_windows[i])
+        winsizechoose.set(int(reader.readline()))
+        if int(winsizechoose.get()) == 2:
+            winsize.config(state='normal')
+            winsize.delete(0, 'end')
+            winsize.insert(END, float(reader.readline()))
+        else:
+            nextline = next(reader)
 
-            isotherm_button.set(int(reader.readline()))
+        num = reader.readline().strip()
+        deco_dt.delete(0, 'end')
+        if num == '-999':
+            decomp.set(0)
+            deco_dt.config(state='disable')
+        else:
+            decomp.set(1)
+            deco_dt.config(state='normal')
+            deco_dt.insert(END, float(num))
 
-            num = reader.readline().strip()
-            isoa.delete(0,'end')
-            if num == '-999':
-                isotherma.set(0)
-                isoa.config(state='disable')
-            else:
-                isotherma.set(1)
-                isoa.config(state='normal')
-                isoa.insert(END,float(num))
+        win = reader.readline()
+        for i in range(4):
+            if win.strip() == welch_windows[i]:
+                windows_var.set(welch_windows[i])
 
-            num = reader.readline().strip()
-            isob.delete(0,'end')
-            if num == '-999':
-                isothermb.set(0)
-                isob.config(state='disable')
-            else:
-                isothermb.set(1)
-                isob.config(state='normal')
-                isob.insert(END,float(num))
+        mon = reader.readline()
+        for i in range(3):
+            if mon.strip() == wavelet_windows[i]:
+                mother_var.set(wavelet_windows[i])
 
-            num = reader.readline().strip()
-            isoc.delete(0,'end')
-            if num == '-999':
-                isothermc.set(0)
-                isoc.config(state='disable')
-            else:
-                isothermc.set(1)
-                isoc.config(state='normal')
-                isoc.insert(END,float(num))
-                
-            num = reader.readline().strip()
-            isod.delete(0,'end')
-            if num == '-999':
-                isothermd.set(0)
-                isod.config(state='disable')
-            else:
-                isothermd.set(1)
-                isod.config(state='normal')                
-                isod.insert(END,float(num))
-                
-            c1 = reader.readline()
-            c2 = reader.readline()
-            for i in range(6):
-                if c1.strip() == comparison_options[i]:
-                    compa1_var.set(comparison_options[i])            
-                if c2.strip() == comparison_options[i]:
-                    compa2_var.set(comparison_options[i])             
- 
+        isotherm_button.set(int(reader.readline()))
 
-            sensor_button.set(int(reader.readline()))
-            num = reader.readline().strip()
-            sena.delete(0,'end')
-            if num == '-999':
-                sensora.set(0)
-                sena.config(state='disable')
-            else:
-                sensora.set(1)
-                sena.config(state='normal')
-                sena.insert(END,int(num))
+        num = reader.readline().strip()
+        isoa.delete(0, 'end')
+        if num == '-999':
+            isotherma.set(0)
+            isoa.config(state='disable')
+        else:
+            isotherma.set(1)
+            isoa.config(state='normal')
+            isoa.insert(END, float(num))
 
-            num = reader.readline().strip()
-            senb.delete(0,'end')
-            if num == '-999':
-                sensorb.set(0)
-                senb.config(state='disable')
-            else:
-                sensorb.set(1)
-                senb.config(state='normal')
-                senb.insert(END,int(num))
+        num = reader.readline().strip()
+        isob.delete(0, 'end')
+        if num == '-999':
+            isothermb.set(0)
+            isob.config(state='disable')
+        else:
+            isothermb.set(1)
+            isob.config(state='normal')
+            isob.insert(END, float(num))
 
-            num = reader.readline().strip()
-            senc.delete(0,'end')
-            if num == '-999':
-                sensorc.set(0)
-                senc.config(state='disable')
-            else:
-                sensorc.set(1)
-                senc.config(state='normal')
-                senc.insert(END,int(num))
-                
-            num = reader.readline().strip()
-            send.delete(0,'end')
-            if num == '-999':
-                sensord.set(0)
-                send.config(state='disable')
-            else:
-                sensord.set(1)
-                send.config(state='normal')                
-                send.insert(END,int(num))    
-                
-            smooth_button.set(int(reader.readline()))  
-            folder_path = reader.readline()
+        num = reader.readline().strip()
+        isoc.delete(0, 'end')
+        if num == '-999':
+            isothermc.set(0)
+            isoc.config(state='disable')
+        else:
+            isothermc.set(1)
+            isoc.config(state='normal')
+            isoc.insert(END, float(num))
+
+        num = reader.readline().strip()
+        isod.delete(0, 'end')
+        if num == '-999':
+            isothermd.set(0)
+            isod.config(state='disable')
+        else:
+            isothermd.set(1)
+            isod.config(state='normal')
+            isod.insert(END, float(num))
+
+        c1 = reader.readline()
+        c2 = reader.readline()
+        for i in range(6):
+            if c1.strip() == comparison_options[i]:
+                compa1_var.set(comparison_options[i])
+            if c2.strip() == comparison_options[i]:
+                compa2_var.set(comparison_options[i])
+
+        sensor_button.set(int(reader.readline()))
+        num = reader.readline().strip()
+        sena.delete(0, 'end')
+        if num == '-999':
+            sensora.set(0)
+            sena.config(state='disable')
+        else:
+            sensora.set(1)
+            sena.config(state='normal')
+            sena.insert(END, int(num))
+
+        num = reader.readline().strip()
+        senb.delete(0, 'end')
+        if num == '-999':
+            sensorb.set(0)
+            senb.config(state='disable')
+        else:
+            sensorb.set(1)
+            senb.config(state='normal')
+            senb.insert(END, int(num))
+
+        num = reader.readline().strip()
+        senc.delete(0, 'end')
+        if num == '-999':
+            sensorc.set(0)
+            senc.config(state='disable')
+        else:
+            sensorc.set(1)
+            senc.config(state='normal')
+            senc.insert(END, int(num))
+
+        num = reader.readline().strip()
+        send.delete(0, 'end')
+        if num == '-999':
+            sensord.set(0)
+            send.config(state='disable')
+        else:
+            sensord.set(1)
+            send.config(state='normal')
+            send.insert(END, int(num))
+
+        smooth_button.set(int(reader.readline()))
+        folder_path = reader.readline()
+
+def open_button():
+    global path_open
+    path_open = askopenfilename(defaultextension='.set', filetypes=[('SET files','*.set')])
+
+    if path_open:
+        load_config(path_open)
+
             
 def AboutCallBack():
    msg = messagebox.showinfo( "About", " Interwave Analyzer - Version 1.01.1 \n Copyright (C) 2019 Rafael de Carvalho Bueno \n All rights reserved \n \n Developed by \n Rafael de Carvalho Bueno \n\n Co-developer \n Tobias Bleninger \n\n improvements and betterments by \n Andreas Lorke \n\n Report problems and improvements to email adresss below \n decarvalhobueno@gmail.com\n \n for mor information, see: \n www.bit.ly/interwave_analyzer \n ")    
+
 
 def OpenUrl(url):
     webbrowser.open_new(url)
 
 
 def save_settings(temporary):
-
-
     if temporary == 'temporary':
         data_file = 'temporary.txt' 
         space     = '\n'
